@@ -1,0 +1,29 @@
+.header-div{
+    
+}
+.header-area{
+    width: 1200px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-between;
+    height: 30px;
+}
+.header-left{
+    
+}
+.header-left a{
+    color: black;
+}
+.header-center{
+    
+}
+.header-center input{
+    width:500px;
+}
+.header-right{
+    display: flex;
+
+}
+.header-right a{
+    color: black;
+}

@@ -1,0 +1,24 @@
+.list-area{
+    display: flex;
+    /* width: 70%; */
+    margin: 0 auto;
+}
+.list-div{
+    /* display: flex; */
+    width: 800px;
+    margin: 0 auto;
+}
+.list-view{
+    display: flex;
+    width: 250px;
+    flex-direction: column;
+    border-bottom: 1px solid #cfcfcf;
+    padding: 20px 10px 15px 20px;
+}
+.list-title{
+    color: black;
+    font-size: 18px;
+}
+.list-content{
+    color: black;
+}

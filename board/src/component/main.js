@@ -1,12 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Category from "./category";
 import List from "./list";
+import './css/main.css';
 
-function Main() {
+function Main(props) {
+    const login = props.login;
     return (
         <div className="main-div">
-            <Link to="/write" >글쓰기</Link>
-            <List />
+            <Category className="category" login={login} />
+            <List className="list" />
         </div>
     );
 }

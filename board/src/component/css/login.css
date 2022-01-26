@@ -1,0 +1,30 @@
+
+.login-div{
+    margin: 0 auto;
+    width: 600px;
+}
+.login-form{
+    width: 70%;
+    margin: 0 auto;
+}
+.login-input-div{
+    border-bottom: 1px solid #adadad;
+    margin-top: 30px;
+}
+.login-input input{
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    margin: 10px 0px 10px 10px;
+}
+.login-submit{
+    margin-top: 50px;
+}
+.login-submit input{
+    width: 100%;
+    outline: none;
+    border: none;
+    height: 40px;
+    font-size: 17px;
+}

@@ -1,0 +1,9 @@
+.main-div{
+    display: flex;
+}
+.category{
+    width: 30%;
+}
+.list{
+    width: 70%;
+}

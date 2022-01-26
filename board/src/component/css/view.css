@@ -1,0 +1,32 @@
+.view-box{
+    margin: 0 auto;
+    width: 600px;
+}
+.view-info{
+    width: 70%;
+    margin: 0 auto;
+}
+.view-title{
+    font-size: 28px;
+}
+.view-content{
+
+}
+.view-category{
+    color: #666666;
+}
+.view-writer{
+    
+    display: flex;
+}
+.view-datetime{
+    color: #666666;
+}
+.view-btn {
+    margin: 0 auto;
+    width: 400px;
+}
+.view-left{
+    
+    /* font-weight: 600; */
+}

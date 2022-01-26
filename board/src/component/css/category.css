@@ -1,0 +1,14 @@
+.cate-area{
+    display: flex;
+    margin: 0 auto;
+}
+.cate-div{
+    width: 300px;
+}
+.category{
+    display: flex;
+    /* width: 400px; */
+}
+.cate-name{
+
+}

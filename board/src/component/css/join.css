@@ -1,0 +1,42 @@
+.sign-box{
+    margin: 0 auto;
+    width: 700px;
+}
+.sign-form{
+
+}
+.sign-info input {
+    width: 500px;
+    height: 40px;
+    font-size: 17px;
+    border: none;
+    outline: none;
+}
+.sign-info{
+    display: flex;
+    position: relative;
+    margin: 30px 0;
+    border-bottom: 1px solid #adadad;
+}
+.sign-label{
+    width: 150px;
+    vertical-align: middle;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+.sign-label label {
+    text-align: center;
+    vertical-align: middle;
+    
+}
+
+.join-btn{
+    outline: none;
+    border: none;
+    /* margin: 30px 0; */
+    width: 100%;
+    height: 50px;
+}
+.sign-submit input:hover {
+    background-color: light-dark(rgb(239, 239, 239), rgb(59, 59, 59));
+}

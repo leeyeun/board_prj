@@ -1,0 +1,64 @@
+.write-box{
+    margin: 0 auto;
+    width: 900px;
+    background-color: white;
+    padding: 20px;
+    margin-top: 45px;
+}
+.write-box h3{
+    text-align: center;
+    font-size: 20px;
+}
+
+.write-info{
+    position: relative;
+    display: flex;
+    padding: 24px 0px;
+    margin: 0px 55px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.write-info input{
+    /* border: none; */
+    outline: none;
+    width: 500px;
+    padding: 0 20px;
+    font-size: 15px;
+    border: 1px solid #e5e5e5;
+    height: 30px;
+}
+
+.info-title{
+    width: 100px;
+    margin-top: 5px;
+}
+.info-category{
+    width: 100px;
+    margin-top: 5px;
+}
+.info-textarea textarea{
+    width: 500px;
+    height: 300px;
+    border: 1px solid #e5e5e5;
+    padding: 8px 20px;
+    font-size: 15px;
+    outline: none;
+    font-family: "맑은고딕", sans-serif;
+}
+.info-input{
+    width: 500px;
+    box-sizing: inherit;
+}
+.write-info-submit{
+    padding: 24px 0px;
+    margin: 0px 55px;
+    text-align: center;
+}
+.submit-button{
+    outline: none;
+    width: 50%;
+    padding: 0 20px;
+    font-size: 15px;
+    border: 1px solid #e5e5e5;
+    height: 30px;
+    
+}
