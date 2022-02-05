@@ -1,14 +1,78 @@
 .cate-area{
-    display: flex;
+    /* display: flex; */
     margin: 0 auto;
+    width: 200px;
+    border: 1px solid #cfcfcf;
+    border-radius: 6px;
 }
 .cate-div{
-    width: 300px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    
+}
+.cate-h3{
+    padding-left: 10px;
+}
+.cate-all{
+    padding-left: 10px;
+    padding-top: 5px;
 }
 .category{
     display: flex;
-    /* width: 400px; */
+    padding-left: 10px;
+    padding-top: 5px;
 }
 .cate-name{
 
+}
+
+.cate-area-list{
+    width: 1080px;
+    margin: 0 auto;
+}
+.body-cate{
+    display: flex;
+}
+.categoryCompo{
+    width: 200px;
+}
+.list-title-title{
+    padding-left: 13px;
+    /* font-size: 20px; */
+}
+.body-cate-list{
+    width: 860px;
+    margin: 0 auto;
+    border: 1px solid #cfcfcf;
+}
+.list-area{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+}
+.list-box{
+    width: 200px;
+    padding: 0px 0px;
+    margin-left: 12px;
+    flex-direction: column;
+    padding-bottom: 10px;
+}
+.list-title{
+    color: #222;
+    font-size: 14px;
+    font-weight: bold;
+}
+.list-user{
+    font-weight: 400;
+    font-size: 13px;
+    color: #666;
+}
+.list-viewcnt{
+    color: #999;
+    font-size: 13px;
+}
+.list-datetime{
+    color: #999;
+    font-size: 13px;
 }

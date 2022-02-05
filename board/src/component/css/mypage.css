@@ -1,0 +1,46 @@
+.mypage-area{
+    display: flex;
+    margin: 0 auto;
+}
+.mypage-area-div{
+    width: 860px;
+    margin: 0 auto;
+    border: 1px solid #cfcfcf;
+}
+.user-mypage{
+    font-weight: 600;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-bottom: 30px;
+}
+.mypage-button{
+    display: flex;
+    justify-content: space-around;
+}
+.mypage-btn{
+    border: none;
+    width: 300px;
+    height: 30px;
+    font-size: 18px;
+}
+.mypage-div{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+}
+.mypage-view{
+    width: 200px;
+    padding: 0px 0px;
+    margin-left: 12px;
+}
+.mypage-list{
+    width: 200px;
+}
+.comment-list-mypage{
+    padding: 10px
+}
+.mypage-user{
+    color: #979797;
+}

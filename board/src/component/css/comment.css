@@ -1,0 +1,127 @@
+.area-comment{
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.comment-list-area{
+    
+}
+.comment-write{
+    width: 800px;
+    border-radius: 6px;
+    /* margin: 12px 0px 29px; */
+    padding: 16px 10px 10px 18px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    /* margin: 0 auto; */
+    box-sizing: border-box;
+    margin-bottom: 15px;
+
+}
+.comment-textarea{
+    border: none;
+    resize: none;
+    outline: none;
+    overflow: hidden;
+    
+    overflow-wrap: break-word;
+    /* line-height:30px; */
+    width:100%;
+    min-height: 50px;
+    font-family: "맑은고딕", sans-serif;
+}
+.comment-user{
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 13px;
+}
+.comment_inbox{
+
+}
+.comment-area{
+
+}
+.list-comment{
+    display: flex;
+    padding-top: 10px;
+    border-top: 1px solid #f2f2f2;
+}
+.comment-list{
+    position: relative;
+    padding: 12px 23px 10px 30px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.comment-nick-name{
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.comment-list-textarea{
+    border: none;
+    resize: none;
+    outline: none;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    /* line-height:30px; */
+    width:100%;
+    min-height: 50px;
+    font-family: "맑은고딕", sans-serif;
+}
+
+.comment-datetime{
+    margin-top: 7px;
+    font-size: 12px;
+    color: #979797;
+}
+.comment-view{
+    /* border-top: 1px solid #f2f2f2; */
+    padding-bottom: 10px;
+    /* height: 100vh; */
+}
+.comment-comment{
+    position: relative;
+    resize: none;
+    border: none;
+    width: 770px;
+    padding: 0;
+    /* min-height: 20px;
+    max-height: 600px; */
+    /* height: 100px; */
+    overflow:visible;
+    /* word-break: break-all;
+    word-wrap: break-word; */
+    font-family: "맑은고딕", sans-serif;
+    background-color: transparent;
+    white-space: pre-wrap;
+}
+.select-comt{
+    position: relative;
+    display: inline-block;
+    width: 50px;
+}
+.option-list{
+    position: absolute;
+    overflow: hidden;
+    max-height: 0;
+    min-width: 40px;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    width: 60px;
+
+}
+.select-comt:hover .option-list{
+    max-height: none;
+}
+.option:hover {
+    background-color: #dfdbdb;
+}
+
+.comment-btn{
+    border: none;
+    outline: none;
+    background-color:transparent;
+}

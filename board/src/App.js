@@ -12,13 +12,14 @@ import Mypage from './component/mypage/mypage';
 import ModifyComment from './component/ModifyComment';
 import MypageComment from './component/mypage/mypage_comment';
 import MypagePost from './component/mypage/mypagePost';
+import CategoryPostList from './component/categoryPostList';
 
 
 function App() {
   const [login, setLogin] = useState(false);
+  const [heart, setHeart] = useState(false);
 
   useEffect(() => {
-    let abortController = new AbortController()
     if (sessionStorage.getItem('userId') === null) {
       console.log('login ?? :: ', login)
     }
@@ -26,26 +27,32 @@ function App() {
       setLogin(true)
       console.log('login ?? :: ', login)
     }
-    return () => {
-      abortController.abort()
+
+    if (localStorage.getItem('like') === null) {
+      console.log('like ?? ', heart)
+    } else {
+      setHeart(true)
+      console.log('like ?? ', heart)
     }
-  })
+
+  }, [])
   return (
-    <div>
+    <div className='app-div'>
       <BrowserRouter>
         <Header login={login} />
         <Routes>
-          <Route path="/" element={<Main login={login} />} />
+          <Route path="/" element={<Main login={login} heart={heart} />} />
           <Route path="/write" element={<Write />} />
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
           <Route path="/post" element={<View />} />
-          <Route path="/post/:id" element={<View login={login} />} />
+          <Route path="/post/:id" element={<View login={login} heart={heart} />} />
           <Route path="/update/:id" element={<Update />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypageComment" element={<MypageComment />} />
           <Route path="/mypagePost" element={<MypagePost />} />
           <Route path="/comment/modify" element={<ModifyComment />} />
+          <Route path="/cate/:cateName" element={<CategoryPostList />} />
         </Routes>
 
       </BrowserRouter>

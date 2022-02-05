@@ -10,31 +10,41 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const multer = require('multer');
-// const upload = multer({
-//     storage: multer.diskStorage({
-//         destination(req, file, cb) {
-//             cb(null, '/upload');
-//         },
-//         filename(req, file, cb) {
-//             const ext = path.extname(file.originalname);
-//             cb(null, path.basename(file, originalname, ext) + Date.now() + ext);
-//         },
-//     }),
-// })
-const upload = multer({ dest: './upload' });
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, 'upload/');
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname);
+        cb(null, path.basename(file.originalname, ext) + "-" + Date.now() + ext);
+    },
+})
+const upload = multer({ storage: storage })
 
-app.use('/image', express.static('./upload'));
+//const upload = multer({ dest: './upload' });
+
+app.use('/image', express.static('upload/'));
 
 //글쓰기
 app.post("/board/write", upload.single('image'), (req, res) => {
-
     const title = req.body.title;
     const content = req.body.content;
-    const user = req.body.user;
+    const userName = req.body.userName;
+    const cateName = req.body.cateName;
+    console.log('??title', req.body.title)
+    // const filename = req.file.filename;
+    //console.log('@@@@@@', res);
+    console.log('!!!file', req.file);
+    // console.log(req.file.filename);
     const image = 'http://localhost:8000/image/' + req.file.filename;
-    const sqlQuery = "INSERT INTO board (title, content, user, image, datetime) VALUES (?, ?, ?, ?, now())";
-    db.query(sqlQuery, [title, content, user, image], (err, result) => {
-        res.send('success!');
+    const sqlQuery = "INSERT INTO board (title, content, userName, image, datetime, cateName) VALUES (?, ?, ?, ?, now(),?)";
+    db.query(sqlQuery, [title, content, userName, image, cateName], (err, result) => {
+        if (err) {
+            console.log(`upload.single error: ${err}`);
+            return res.sendStatus(500);
+        } else {
+            res.send('success!');
+        }
     })
 });
 
@@ -45,6 +55,14 @@ app.get("/board/list", (req, res) => {
         res.send(result);
     })
 });
+app.get("/board/list/:username", (req, res) => {
+    const params = [req.params.username];
+    const sqlQuery = "SELECT * FROM board where username = ? ORDER BY id DESC;";
+    db.query(sqlQuery, params, (err, rows, result) => {
+        res.send(rows)
+    })
+});
+
 //상세글
 app.get("/board/post/:id", (req, res) => {
     //const id = req.body.id;
@@ -55,34 +73,118 @@ app.get("/board/post/:id", (req, res) => {
     })
 });
 
-//글 수정
-// app.use('/board/update/:id', (req, res) => {
-//     const id = req.body.id;
-//     const title = req.body.title;
-//     const content = req.body.content;
-//     const sqlQuery = "UPDATE board SET title = ?, content = ? WHERE id = ?"
-//     db.query(sqlQuery, [title, content, id], (err, data) => {
-//         if (title === undefined) {
-//             const sql1 = 'UPDATE board SET content = ? WHERE id = ?'
-//             db.query(sql1, [content, id], (err, data) => {
-//                 if (content === undefined) {
-//                     const sql2 = 'UPDATE board SET title = ? WHERE id = ?'
-//                     db.query(sql2, [title, id], (err, rows, fields) => {
-//                         res.send(rows)
-//                     })
-//                 }
-//             })
-//         }
-//     })
-// });
-app.use('/board/update/:id', (req, res) => {
+//좋아요
+app.post("/board/post/heart/plus/:id", (req, res) => {
+    const sqlQuery = "update board set likes = likes + 1 where id = ?;"
+    const id = req.body.id;
+    const likes = req.body.likes;
+    db.query(sqlQuery, [id, likes], (err, rows, fields) => {
+        res.send(rows)
+    })
+})
+app.post("/board/post/heart/:id", (req, res) => {
+    const sqlQuery = "update board set likes = likes - 1 where id = ?;"
+    const id = req.body.id;
+    const likes = req.body.likes;
+    db.query(sqlQuery, [id, likes], (err, rows, fields) => {
+        res.send(rows)
+    })
+})
+
+app.get("/heart/:boardId", (req, res) => {
+    const sqlQuery = 'SELECT * FROM likes WHERE boardId = ?'
+    const params = req.params.boardId;
+    db.query(sqlQuery, params, (err, rows, result) => {
+        res.send(rows)
+    })
+})
+//boardId 별 like 갯수
+app.get('/heart/cnt/:boardId', (req, res) => {
+    const sqlQuery = 'SELECT count(boardId) as cnt FROM likes WHERE like_cnt = 1 and boardId = ?'
+    const params = req.params.boardId;
+    db.query(sqlQuery, params, (err, rows, fields) => {
+        res.send(rows)
+    })
+})
+app.post("/heart", (req, res) => {
+    const sqlQuery = 'INSERT INTO likes (boardId, userName, like_cnt) VALUES (?,?,?)'
+    const boardId = req.body.boardId;
+    const userName = req.body.userName;
+    const like_cnt = req.body.like_cnt;
+    db.query(sqlQuery, [boardId, userName, like_cnt], (err, result) => {
+        res.send('success!!!');
+    })
+})
+app.post('/heart/plus/:boardId', (req, res) => {
+    const sqlQuery = 'update likes set like_cnt = 1 where boardId = ?'
+    const boardId = req.body.boardId;
+    const like_cnt = req.body.like_cnt;
+    db.query(sqlQuery, [boardId, like_cnt], (err, result) => {
+        res.send('success!!!');
+    })
+})
+app.post('/heart/minus/:boardId', (req, res) => {
+    const sqlQuery = 'update likes set like_cnt = 0 where boardId = ?'
+    const boardId = req.body.boardId;
+    const like_cnt = req.body.like_cnt;
+    db.query(sqlQuery, [boardId, like_cnt], (err, result) => {
+        res.send('success!!!');
+    })
+})
+//조회수
+app.post("/board/post/view/:id", (req, res) => {
+    const sqlQuery = "update board set view_cnt = view_cnt + 1 where id = ?;"
+    const id = req.body.id;
+    const view_cnt = req.body.view_cnt;
+    db.query(sqlQuery, [id, view_cnt], (err, rows, fields) => {
+        res.send(rows)
+    })
+})
+
+app.use('/board/update/:id', upload.single('image'), (req, res) => {
     const id = req.body.id;
     const title = req.body.title;
     const content = req.body.content;
-    const sqlQuery = "UPDATE board SET title = ?, content = ?, datetime = now() WHERE id = ?"
-    db.query(sqlQuery, [title, content, id], (err, rows, fields) => {
-        res.send(rows)
-    })
+    console.log('!!!!', req.file);
+    console.log('@@@@', req.file.filename);
+    const image = 'http://localhost:8000/image/' + req.file.filename;
+    if (title == '') {
+        const sqlQuery2 = "UPDATE board SET content = ?, image = ?, datetime = now() WHERE id = ?";
+        db.query(sqlQuery2, [content, image, id], (err, rows, fields) => {
+            res.send(rows)
+        })
+    } else if (content === '') {
+        const sqlQuery3 = "UPDATE board SET title = ?, image = ?, datetime = now() WHERE id = ?";
+        db.query(sqlQuery3, [title, image, id], (err, rows, fields) => {
+            res.send(rows)
+        })
+    } else if (req.file.filename === undefined) {
+        console.log('!!');
+        const sqlQuery4 = "UPDATE board SET title = ?, content = ?, datetime = now() WHERE id = ?";
+        db.query(sqlQuery4, [title, content, id], (err, rows, fields) => {
+            res.send(rows)
+        })
+    } else if (title === '' && content === '') {
+        const sqlQuery5 = "UPDATE board SET image = ?, datetime = now() WHERE id = ?";
+        db.query(sqlQuery5, [image, id], (err, rows, fields) => {
+            res.send(rows)
+        })
+    } else if (title === '' && image === '') {
+        const sqlQuery6 = "UPDATE board SET content = ?, datetime = now() WHERE id = ?";
+        db.query(sqlQuery6, [content, id], (err, rows, fields) => {
+            res.send(rows)
+        })
+    } else if (content === '' && image === '') {
+        const sqlQuery7 = "UPDATE board SET title = ?, datetime = now() WHERE id = ?";
+        db.query(sqlQuery7, [title, id], (err, rows, fields) => {
+            res.send(rows)
+        })
+    } else {
+        const sqlQuery = "UPDATE board SET title = ?, content = ?, image = ?, datetime = now() WHERE id = ?";
+        db.query(sqlQuery, [title, content, image, id], (err, rows, fields) => {
+            res.send(rows)
+        })
+    }
 });
 
 //글삭제
@@ -93,7 +195,25 @@ app.post('/board/post/:id', (req, res) => {
         res.send(rows);
     })
 });
+//board.id.user
+app.get('/board/comment/:id', (req, res) => {
+    const sqlQuery = "SELECT usename FROM board WHERE id = ?";
+    const id = req.body.id;
+    const usename = req.body.usename;
+    const params = [usename, id];
 
+    db.query(sqlQuery, params, (err, result) => {
+        res.send(result);
+    })
+})
+app.get("/board/cnt", (req, res) => {
+    //const id = req.body.id;
+    const sqlQuery = "select count(id) as cnt from board";
+    const params = [req.params.id];
+    db.query(sqlQuery, params, (err, rows, fields) => {
+        res.send(rows)
+    })
+});
 //댓글 생성
 app.post("/post/comment", (req, res) => {
     const comment = req.body.comment;
@@ -112,18 +232,28 @@ app.get('/comment/mypage/:userId', (req, res) => {
     })
 })
 //댓글 목록 
-app.get("/comment", (req, res) => {
-    const sqlQuery = "SELECT * FROM board_comment";
-    const params = [req.body.boardId];
+app.get("/comment/:userId", (req, res) => {
+    const sqlQuery = "SELECT * FROM board_comment WHERE userId = ? order by comId desc";
+    const userId = req.body.userId;
+    const params = req.params.userId;
     db.query(sqlQuery, params, (err, result) => {
         res.send(result);
     })
 });
-app.get("/comment/:boardId", (req, res) => {
-    const params = [req.body.boardId];
+app.get("/comment/list/:boardId", (req, res) => {
     const sqlQuery = "SELECT * FROM board_comment WHERE boardId = ?";
+    const params = [req.params.boardId];
     db.query(sqlQuery, params, (err, result) => {
         res.send(result);
+    })
+});
+//댓글 수
+app.get("/comment/post/view/:boardId", (req, res) => {
+    //const id = req.body.id;
+    const sqlQuery = "select count(boardId) as cntview from board_comment where boardId = ?;";
+    const params = [req.params.boardId];
+    db.query(sqlQuery, params, (err, rows, fields) => {
+        res.send(rows)
     })
 });
 //댓글 하나씪 목록 
@@ -166,11 +296,27 @@ app.get("/category/:cateId", (req, res) => {
         res.send(result);
     })
 });
+//카테고리 번호별 게시물 불러오기
+app.get("/cate/:cateName", (req, res) => {
+    const params = [req.params.cateName];
+    const sqlQuery = "SELECT * FROM board WHERE cateName = ? order by id desc";
+    db.query(sqlQuery, params, (err, result, fields) => {
+        res.send(result);
+    })
+})
+app.get("/cate/cateCnt/:cateName", (req, res) => {
+    //const id = req.body.id;
+    const sqlQuery = "select count(cateName) as cateCnt from board where cateName = ?;";
+    const params = [req.params.cateName];
+    db.query(sqlQuery, params, (err, rows, fields) => {
+        res.send(rows)
+    })
+});
 //카테고리 추가
 app.post('/category/add', (req, res) => {
-    const cate_name = req.body.cate_name;
-    const sqlQuery = "INSERT INTO category (cate_name) VALUES (?)";
-    db.query(sqlQuery, [cate_name], (err, result) => {
+    const cateName = req.body.cateName;
+    const sqlQuery = "INSERT INTO category (cateName) VALUES (?)";
+    db.query(sqlQuery, [cateName], (err, result) => {
         res.send('success!');
     })
 })
@@ -184,13 +330,14 @@ app.post('/category/:cateId', (req, res) => {
 });
 //카테고리 수정
 app.post('/category/modify/:cateId', (req, res) => {
-    const sqlQuery = "UPDATE category SET cate_name = ? WHERE cateId = ?";
-    const cate_name = req.body.cate_name;
+    const sqlQuery = "UPDATE category SET cateName = ? WHERE cateId = ?";
+    const cateName = req.body.cateName;
     const cateId = req.body.cateId;
-    db.query(sqlQuery, [cate_name, cateId], (err, rows, fields) => {
+    db.query(sqlQuery, [cateName, cateId], (err, rows, fields) => {
         res.send(rows);
     })
 })
+
 //검색
 // app.post('/post/search', (req, res) => {
 //     const sqlQuery = "SELECT * FROM board WHERE title like %?%";

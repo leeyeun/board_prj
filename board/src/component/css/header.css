@@ -1,15 +1,15 @@
 .header-div{
-    
+    padding-top: 10px;
 }
 .header-area{
-    width: 1200px;
+    width: 1080px;
     display: flex;
     margin: 0 auto;
     justify-content: space-between;
     height: 30px;
 }
 .header-left{
-    
+    font-size: 18px;
 }
 .header-left a{
     color: black;
@@ -22,8 +22,54 @@
 }
 .header-right{
     display: flex;
-
+    font-size: 18px;
 }
 .header-right a{
     color: black;
+}
+.header-right-login{
+    display: flex;
+}
+.header-login{
+    padding-left: 8px;
+}
+.header-right-click{
+    display: flex;
+}
+.wirte-click{
+    padding-right: 10px;
+}
+.select{
+    position: relative;
+    display: inline-block;
+}
+.option-list{
+    position: absolute;
+    overflow: hidden;
+    max-height: 0;
+    width: 100px;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+
+}
+.option {
+    width: 80px;
+}
+.option a{
+    text-align: center;
+}
+.select:hover .option-list{
+    max-height: none;
+    width: 80px;
+}
+.option:hover {
+    width: 80px;
+    background-color: #f9f9fa;
+}
+.logout-button{
+    border: none;
+    outline: none;
+    background-color:transparent;
+    width: 80px;
 }

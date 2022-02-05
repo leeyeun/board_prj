@@ -5,6 +5,9 @@ function Login() {
     const [inputId, setInputId] = useState('');
     const [inputPw, setInputPw] = useState('');
 
+    const REST_API_KEY = "6ddde6cbb38765470250075bfbab5d51";
+    const REDIRECT_URI = "http://localhost:8000/login"
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     const onIdHandler = (e) => {
         setInputId(e.target.value)
     }
@@ -69,6 +72,7 @@ function Login() {
                 </div>
                 <div className='login-submit'>
                     <div> <input type='button' value='로그인' onClick={onSubmitLogin} /> </div>
+                    {/* <div><a href={KAKAO_AUTH_URL}>카카오 로그인</a></div> */}
                 </div>
             </form>
         </div>

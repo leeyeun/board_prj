@@ -3,7 +3,6 @@
     width: 900px;
     background-color: white;
     padding: 20px;
-    margin-top: 45px;
 }
 .write-box h3{
     text-align: center;
@@ -42,11 +41,26 @@
     padding: 8px 20px;
     font-size: 15px;
     outline: none;
+    resize: none;
     font-family: "맑은고딕", sans-serif;
 }
 .info-input{
     width: 500px;
     box-sizing: inherit;
+}
+.info-imgPreview{
+    padding-top: 20px;
+    margin: 0 auto;
+    width: 500px;
+}
+.imgPreview{
+    margin: 0 auto;
+    padding-left: 150px;
+}
+.select-category{
+    width: 540px;
+    outline: none;
+    padding: 8px 20px;
 }
 .write-info-submit{
     padding: 24px 0px;

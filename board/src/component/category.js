@@ -4,11 +4,13 @@ import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './css/category.css';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import categoryPostList from "./categoryPostList";
 function Category(props) {
 
     const [category, setCategory] = useState('');
     const [modifyName, setModifyName] = useState('');
+    const [PostCate, setPostCate] = useState('');
     const [edit, setEdit] = useState(false);
     // const [cate_name, setCate_Name] = useState('');
     const login = props.login;
@@ -24,14 +26,14 @@ function Category(props) {
     }
 
     const add_category = async function () {
-        let cate_name = window.prompt('추가할 카테고리의 이름을 입력해주세요.');
-        cate_name = cate_name.trim();
-        console.log(category.cate_name)
+        let cateName = window.prompt('추가할 카테고리의 이름을 입력해주세요.');
+        cateName = cateName.trim();
+        console.log(category.cateName)
 
-        if (cate_name !== '' && cate_name.length > 0) {
+        if (cateName !== '' && cateName.length > 0) {
 
             axios.post('http://localhost:8000/category/add', {
-                cate_name: cate_name
+                cateName: cateName
             }).then(() => {
                 alert('등록 완료!');
                 return window.location.replace('/');
@@ -44,12 +46,12 @@ function Category(props) {
     const modifyCategory = (cate) => {
         console.log(cate.cateId);
         if (modifyName !== '' && modifyName.length > 0) {
-            if (cate.cate_name === modifyName) {
+            if (cate.cateName === modifyName) {
                 return alert('변경하려는 카테고리의 이름이 이미 있습니다.')
             }
-            if (window.confirm(cate.cate_name + '의 이름을 ' + modifyName + ' 으로 수정하시겠습니까?')) {
+            if (window.confirm(cate.cateName + '의 이름을 ' + modifyName + ' 으로 수정하시겠습니까?')) {
                 axios.post(`http://localhost:8000/category/modify/${cateId}`, {
-                    cate_name: modifyName,
+                    cateName: modifyName,
                     cateId: cate.cateId
                 }).then(() => {
                     alert('수정 완료!');
@@ -65,7 +67,7 @@ function Category(props) {
     }
 
     const deleteCategory = async (cate) => {
-        window.confirm(`선택하신 카테고리가 ${cate.cate_name}이 맞습니까?`);
+        window.confirm(`선택하신 카테고리가 ${cate.cateName}이 맞습니까?`);
 
         if (window.confirm(' 정말 삭제하시겠습니까?')) {
             axios.post(`http://localhost:8000/category/${cate.cateId}`, {
@@ -85,12 +87,17 @@ function Category(props) {
         }
     }
     useEffect(() => {
-        axios.get('http://localhost:8000/category')
-            .then((response) => {
-                setCategory(response.data)
-            })
-            .catch(err => console.log(err));
-        setLoading(true);
+        const cateeffect = () => {
+            axios.get('http://localhost:8000/category')
+                .then((response) => {
+                    setCategory(response.data)
+                })
+                .catch(err => console.log(err));
+            setLoading(true);
+        }
+
+        cateeffect();
+
     }, [])
 
     return (
@@ -98,13 +105,14 @@ function Category(props) {
         <div className="cate-area">
             {loading === true ?
                 <div className="cate-div">
-                    <h4>카테고리</h4>
+                    <h3 className="cate-h3">카테고리</h3>
                     {login ? !edit ?
-                        <input type="button" value="edit" onClick={EditClick}></input>
-                        : <input type="button" value="add" onClick={add_category}></input>
+                        <input className="input-btn" type="button" value="edit" onClick={EditClick}></input>
+                        : <input className="input-btn" type="button" value="add" onClick={add_category}></input>
                         : <></>
 
                     }
+                    <a href="/" className="cate-all">전체 게시물</a>
                     {category && category.length > 0 ?
                         category.map((cate, key) => {
                             if (edit) {
@@ -118,7 +126,7 @@ function Category(props) {
                                                 name="modify_name"
                                                 maxLength="15"
                                                 className="modify-input"
-                                                defaultValue={cate.cate_name}
+                                                defaultValue={cate.cateName}
                                                 onChange={handlerModify}>
                                             </input>
                                             <FontAwesomeIcon icon={faCheck} onClick={() => modifyCategory(cate)} />
@@ -127,10 +135,13 @@ function Category(props) {
                                 )
                             }
                             else {
+
                                 return (
+
                                     <div className="category" key={key}>
                                         <div className="cate-name">
-                                            {cate.cate_name}
+
+                                            <a href={`/cate/${cate.cateName}`}>{cate.cateName}</a>
                                         </div>
                                     </div>
                                 )

@@ -6,9 +6,12 @@ import './css/main.css';
 function Main(props) {
     const login = props.login;
     return (
-        <div className="main-div">
-            <Category className="category" login={login} />
-            <List className="list" />
+        <div className="main-area">
+            <div className="content-area">
+                <Category className="category" login={login} />
+                <List className="list" />
+            </div>
+
         </div>
     );
 }

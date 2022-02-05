@@ -8,52 +8,66 @@ function Write() {
 
     })
     const [category, setCategory] = useState('');
+    const [selectCate, setSelectCate] = useState('');
     const loginUser = sessionStorage.userId;
-    const [fileName, setFileName] = useState('');
     const [imgSrc, setImgSrc] = useState('');
     // const [title, setTitle] = useState('');
     // const [content, setContent] = useState('');
     // const [imageName, setImageName] = useState('');
-    // const [image, setImage] = useState('');
+    const [selected, setSelected] = useState(false);
+    const [image, setImage] = useState('');
 
-    const [imgBase64, setImgBase64] = useState('');// 파일 base64
-    const [previewImg, setPreviewImg] = useState(null);	//파일	
-
-    const [selected, setSelected] = useState(false)
-
+    const getValue = e => {
+        //const { name, value } = e.target;
+        setBoard({
+            ...board,
+            [e.target.name]: e.target.value
+        })
+    };
     let formData = new FormData();
     const ImageHandler = (e) => {
-        const image = e.target.files[0];
-        //const imageName = e.target.value;
-        const filename = e.target.value;
-        console.log(filename)
-        formData.append('image', image, filename)
-        console.log(image);
-        console.log(image.name)
-        // var reader = new FileReader();
-        // reader.readAsDataURL(image);
-        // reader.onload = (function (e) {
-        //     setImgSrc(e.target.result);
-        // })
+        //const image = e.target.files[0];
+        setImage(e.target.files[0]);
+
+        Reader(e);
 
     }
-
+    const Reader = e => {
+        let reader = new FileReader();
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0]);
+            console.log(e.target.files[0])
+        }
+        reader.onload = () => {
+            const previewImgUrl = reader.result
+            if (previewImgUrl) {
+                setImgSrc([...imgSrc, previewImgUrl])
+            }
+        };
+    }
+    const handlerCategory = (e) => {
+        setSelectCate(e.target.value);
+        console.log(selectCate);
+        console.log('category : ', e.target.value)
+    }
     const onSubmitFormdata = (e) => {
         e.preventDefault();
         formData.append("title", board.title)
         formData.append("content", board.content)
-        formData.append("user", loginUser)
+        formData.append("userName", loginUser)
+        formData.append('image', image)
+        formData.append("cateName", selectCate);
 
         console.log(board.title)
         console.log(board.content)
         console.log(loginUser)
-
+        console.log(image);
+        console.log(selectCate);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
-
         axios.post('http://localhost:8000/board/write', formData, config)
             .then((res) => {
                 console.log(res);
@@ -62,43 +76,15 @@ function Write() {
             }).catch(err => console.log(err));
     }
 
-    // const submitReview = (e) => {
-    //     if (board.title.trim() === '') {
-    //         alert('제목을 입력해주세요');
-    //     }
-    //     if (board.content.trim() === '') {
-    //         alert('내용을 입력해주세요');
-    //     }
-    //     if (board.image.trim() === '') {
-    //         alert('이미지를 선택해주세요');
-    //     }
-    //     axios.post('http://localhost:8000/board/write')
-    //         .then(() => {
-    //             alert('등록 완료!');
-    //             return window.location.replace('/');
-    //         }).catch(err => console.log(err));
-    // };
-    const handlerCategory = (e) => {
-        setCategory(e.target.value)
-        setSelected(true);
-        console.log(category)
-    }
+    useEffect(() => {
+        axios.get('http://localhost:8000/category')
+            .then((response) => {
+                setCategory(response.data)
+            })
+            .catch(err => console.log(err));
+    }, [])
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:8000/category')
-    //         .then((response) => {
-    //             setCategory(response.data)
-    //         })
-    //         .catch(err => console.log(err));
-    // }, [])
 
-    const getValue = e => {
-        const { name, value } = e.target;
-        setBoard({
-            ...board,
-            [e.target.name]: e.target.value
-        })
-    };
 
     return (
         <div>
@@ -109,25 +95,23 @@ function Write() {
                         <div className="info-category">
                             <label>카테고리</label>
                         </div>
-                        {/* <div className="info-input">
-
-                            <select className="select-category">
-                                {category && category.length > 0 ?
-                                    category.map((cate, key) => {
-                                        return (
-                                            <option key={key} value={cate.value} name="cate_name" onClick={handlerCategory}>
-                                                {cate.cate_name}
-                                            </option>
-
-                                        )
-                                    })
-                                    :
-                                    <div>데이터가 없습니다.</div>
-                                }
-
-                            </select>
-
-                        </div> */}
+                        <div className="info-input">
+                            <span>
+                                <select className="select-category" onChange={handlerCategory}>
+                                    {category && category.length > 0 ?
+                                        category.map((cate, key) => {
+                                            return (
+                                                <option className="cateName" key={key} value={cate.value} name="cateName" >
+                                                    {cate.cateName}
+                                                </option>
+                                            )
+                                        })
+                                        :
+                                        <></>
+                                    }
+                                </select>
+                            </span>
+                        </div>
                     </div>
                     <div className="write-info">
                         <div className="info-title">
@@ -146,19 +130,22 @@ function Write() {
                         </div>
                     </div>
                     <div className="write-info">
-                        <div className="info-image">
+                        <div className="info-title">
                             <label>이미지</label>
                         </div>
-                        <div className="info-input">
-                            <input type="file" className="imgInput"
-                                accept="image/*"
-                                name="imgFile"
-                                id='imgFile'
-                                onChange={ImageHandler}></input>
+                        <div className="info-image-div">
+                            <div className="info-input">
+                                <input type="file" className="imgInput"
+                                    accept="image/*"
+                                    name="image"
+                                    id='image'
+                                    onChange={ImageHandler}></input>
+                            </div>
+                            <div className="info-imgPreview">
+                                {imgSrc && <img src={imgSrc} className="imgPreview" name='img' style={{ 'width': '250px', 'height': '250px' }}></img>}
+                            </div>
                         </div>
-                        {/* <div style={{ "backgroundColor": "#efefef", "width": "150px", "height": "150px" }} onChange={ImageHandler}></div>
-                        <div> */}
-                        <img name='image' style={{ 'width': '250px', 'height': '250px' }}></img>
+
 
                     </div>
                     <div className="write-info-submit">

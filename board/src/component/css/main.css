@@ -1,9 +1,14 @@
-.main-div{
+
+.main-area{
+    width: 1080px;
+    margin: 0 auto;
+}
+.content-area{
     display: flex;
 }
 .category{
-    width: 30%;
+    width: 200px;
 }
 .list{
-    width: 70%;
+    width: 860px;
 }

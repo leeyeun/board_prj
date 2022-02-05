@@ -1,24 +1,101 @@
 .list-area{
     display: flex;
-    /* width: 70%; */
     margin: 0 auto;
 }
 .list-div{
-    /* display: flex; */
-    width: 800px;
+    width: 860px;
     margin: 0 auto;
+    border: 1px solid #cfcfcf;
+}
+.list-allList{
+    padding-left: 13px;
+}
+.cnt{
+    padding-left: 13px;
+    padding-bottom: 10px;
+    font-size: 14px;
+}
+.list-post{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
 }
 .list-view{
-    display: flex;
-    width: 250px;
+    width: 200px;
+    padding: 0px 0px;
+    margin-left: 12px;
     flex-direction: column;
-    border-bottom: 1px solid #cfcfcf;
-    padding: 20px 10px 15px 20px;
+    padding-bottom: 10px;
 }
 .list-title{
-    color: black;
-    font-size: 18px;
+    color: #222;
+    font-size: 14px;
+    font-weight: bold;
+}
+.list-user{
+    font-weight: 400;
+    font-size: 13px;
+    color: #666;
+}
+.list-viewcnt{
+    color: #999;
+    font-size: 13px;
+}
+.list-datetime{
+    color: #999;
+    font-size: 13px;
 }
 .list-content{
     color: black;
+}
+.header-search{
+    margin: 0 auto;
+    width: 500px;
+    padding: 20px 0px;
+}
+.header-top{
+    display: flex;
+    justify-content: space-between;
+}
+.header-down{
+    background-color: #f9f9fa;
+    /* position: absolute; */
+    width: 500px;
+}
+.search-input{
+    width: 400px;
+}
+.search-box{
+    display: flex;
+    width: 300px;
+    padding-left: 34px;
+}
+.search-list{
+    
+}
+.pagination-ul{
+    display: flex;
+    margin: 0 auto;
+    width: 50px;
+    padding: 0;
+}
+.pagination-li{
+    padding: 5px;
+}
+/* .pagination-li:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+} */
+/* .pagination-li:focus::after{
+    background-color: yellow;
+    font-weight: bold;
+} */
+/* .pagination-span :hover::after{
+    font-weight: bold;
+} */
+/* .pagination-span :focus::after{
+    background-color: yellow;
+    font-weight: bold;
+} */
+.pagination-span li span :focus{
+    font-weight: bold;
 }
